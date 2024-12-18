@@ -2,8 +2,8 @@ name: Update Presence
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Menjalankan setiap hari jam 00:00 UTC
-  workflow_dispatch: # Memungkinkan menjalankan secara manual
+    - cron: "0 0 * * *" # Workflow jalan jam 00:00 UTC
+  workflow_dispatch: # Bisa dijalankan manual juga
 
 jobs:
   update-presence:
@@ -15,10 +15,10 @@ jobs:
 
       - name: Update Presence
         run: |
-          # Dapatkan tanggal hari ini dalam format YYYY-MM-DD
-          TODAY=$(date -u '+%Y-%m-%d')
+          # Dapatkan tanggal hari ini dalam waktu lokal (WIB, UTC+7)
+          TODAY=$(date -u '+%Y-%m-%d' -d '+7 hours')
           
-          # Tulis ulang README.md dengan format yang diinginkan
+          # Update file README.md
           echo "# github-presence" > README.md
           echo "**Present:** $TODAY" >> README.md
 
@@ -28,8 +28,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Commit perubahan dengan pesan sesuai format
-          TODAY=$(date -u '+%Y-%m-%d')
+          # Commit perubahan
+          TODAY=$(date -u '+%Y-%m-%d' -d '+7 hours')
           git add README.md
           git commit -m "🌱 present: $TODAY"
           git push
