@@ -1,0 +1,35 @@
+name: Update Presence
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Menjalankan setiap hari jam 00:00 UTC
+  workflow_dispatch: # Memungkinkan menjalankan secara manual
+
+jobs:
+  update-presence:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Update Presence
+        run: |
+          # Dapatkan tanggal hari ini dalam format YYYY-MM-DD
+          TODAY=$(date -u '+%Y-%m-%d')
+          
+          # Tulis ulang README.md dengan format yang diinginkan
+          echo "# github-presence" > README.md
+          echo "**Present:** $TODAY" >> README.md
+
+      - name: Commit Changes
+        run: |
+          # Konfigurasi Git
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Commit perubahan dengan pesan sesuai format
+          TODAY=$(date -u '+%Y-%m-%d')
+          git add README.md
+          git commit -m "🌱 present: $TODAY"
+          git push
